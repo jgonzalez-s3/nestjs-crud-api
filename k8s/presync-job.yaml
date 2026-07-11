@@ -1,0 +1,26 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: liquibase-check
+
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+
+spec:
+  backoffLimit: 0
+
+  template:
+    spec:
+      restartPolicy: Never
+
+      containers:
+        - name: liquibase
+
+          image: liquibase/liquibase:5.0
+
+          command:
+            - liquibase
+
+          args:
+            - --version
