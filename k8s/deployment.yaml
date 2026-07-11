@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nestjs-api
+  namespace: products
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: nestjs-api
+
+  template:
+    metadata:
+      labels:
+        app: nestjs-api
+
+    spec:
+      containers:
+        - name: nestjs-api
+
+          image: jgonzalezs3/nestjs-crud-api:latest
+
+          imagePullPolicy: Always
+
+          ports:
+            - containerPort: 3000
+
+          env:
+            - name: DB_HOST
+              value: "host.docker.internal"
+
+            - name: DB_PORT
+              value: "5432"
+
+            - name: DB_USER
+              value: "postgres"
+
+            - name: DB_PASSWORD
+              value: "TU_PASSWORD"
+
+            - name: DB_NAME
+              value: "productsdb"
+
+            - name: API_PORT
+              value: "3000"
