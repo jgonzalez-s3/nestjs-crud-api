@@ -28,7 +28,7 @@ spec:
 
           env:
             - name: DB_HOST
-              value: "host.docker.internal"
+              value: "192.168.20.24"
 
             - name: DB_PORT
               value: "5432"
