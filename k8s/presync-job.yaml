@@ -20,7 +20,12 @@ spec:
           image: liquibase/liquibase:5.0
 
           command:
-            - liquibase
+            - sh
+            - -c
 
           args:
-            - --version
+            - |
+              echo "=== PreSync iniciado ==="
+              liquibase --version
+              sleep 15
+              echo "=== PreSync finalizado ==="
