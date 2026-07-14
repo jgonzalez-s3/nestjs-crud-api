@@ -43,4 +43,4 @@ spec:
               value: "productsdb"
 
             - name: API_PORT
-              value: "3000"
+              value: "3001"
