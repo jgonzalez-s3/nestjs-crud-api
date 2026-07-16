@@ -90,14 +90,34 @@ spec:
                 liquibase validate
 
                 echo ""
-                echo "=== Verificando cambios pendientes ==="
-                liquibase status
+                echo "=== Consultando estado ==="
+
+                STATUS=$(liquibase status --verbose)
+
+                echo "$STATUS"
+
+                if echo "$STATUS" | grep -q "0 changesets have not been applied"; then
+                    echo ""
+                    echo "===================================="
+                    echo "La base de datos ya está actualizada."
+                    echo "No se ejecutará Liquibase update."
+                    echo "===================================="
+
+                    sleep 60
+                    exit 0
+                fi
 
                 echo ""
-                echo "=== SQL que se ejecutaría ==="
-                liquibase updateSQL
+                echo "===================================="
+                echo "Se detectaron migraciones pendientes."
+                echo "Ejecutando Liquibase update..."
+                echo "===================================="
+
+                liquibase update
 
                 echo ""
-                echo "===== PRE-SYNC FINALIZADO ====="
+                echo "===================================="
+                echo "Migraciones aplicadas correctamente."
+                echo "===================================="
 
                 sleep 60
