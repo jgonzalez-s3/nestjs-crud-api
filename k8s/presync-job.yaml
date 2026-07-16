@@ -21,13 +21,38 @@ spec:
 
           image: liquibase/liquibase:5.0
 
+          env:
+            - name: LIQUIBASE_COMMAND_URL
+              value: jdbc:postgresql://192.168.20.24:5432/liquibasedemo
+
+            - name: LIQUIBASE_COMMAND_USERNAME
+              value: postgres
+
+            - name: LIQUIBASE_COMMAND_PASSWORD
+              value: "12345"
+
           command:
             - sh
             - -c
 
           args:
-            - |
-              echo "=== PreSync iniciado ==="
-              liquibase --version
-              sleep 15
-              echo "=== PreSync finalizado ==="
+            -|
+              set -e
+
+              echo "===== PRE-SYNC ====="
+
+              echo "Instalando git..."
+              apk add --no-cache git
+
+              echo "Clonando repositorio..."
+              git clone https://github.com/jgonzalez-s3/liquibase-migrations.git
+
+              cd liquibase-migrations
+
+              echo "Verificando estructura..."
+
+              test -f liquibase.properties
+              test -f changelog/db.changelog-master.json
+              test -f lib/postgresql-42.7.10.jar
+
+              echo "Archivos encontrados."
