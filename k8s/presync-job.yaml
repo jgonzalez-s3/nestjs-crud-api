@@ -54,5 +54,6 @@ spec:
               test -f liquibase.properties
               test -f changelog/db.changelog-master.json
               test -f lib/postgresql-42.7.10.jar
-
+              sleep 60
               echo "Archivos encontrados."
+              sleep 60
