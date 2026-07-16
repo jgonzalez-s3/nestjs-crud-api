@@ -41,7 +41,8 @@ spec:
               echo "===== PRE-SYNC ====="
 
               echo "Instalando git..."
-              apk add --no-cache git
+              git -v
+              
 
               echo "Clonando repositorio..."
               git clone https://github.com/jgonzalez-s3/liquibase-migrations.git
