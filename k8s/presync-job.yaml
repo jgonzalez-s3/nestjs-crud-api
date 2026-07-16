@@ -1,59 +1,42 @@
-apiVersion: batch/v1
-kind: Job
-metadata:
-  name: liquibase-check
+containers:
+  - name: liquibase
+    image: liquibase/liquibase:5.0
 
-  annotations:
-    prueba: "1"
-    argocd.argoproj.io/hook: PreSync
-    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation, HookSucceeded
+    env:
+      - name: LIQUIBASE_COMMAND_URL
+        value: jdbc:postgresql://192.168.20.24:5432/liquibasedemo
 
-spec:
-  backoffLimit: 0
+      - name: LIQUIBASE_COMMAND_USERNAME
+        value: postgres
 
-  template:
-    spec:
-      replicas: 2
-      restartPolicy: Never
+      - name: LIQUIBASE_COMMAND_PASSWORD
+        value: "12345"
 
-      containers:
-        - name: liquibase
+    command:
+      - sh
+      - -c
 
-          image: liquibase/liquibase:5.0
+    args:
+      - |
+        set -e
 
-          env:
-            - name: LIQUIBASE_COMMAND_URL
-              value: jdbc:postgresql://192.168.20.24:5432/liquibasedemo
+        echo "===== PRE-SYNC ====="
 
-            - name: LIQUIBASE_COMMAND_USERNAME
-              value: postgres
+        echo "Instalando git..."
+        apk add --no-cache git
 
-            - name: LIQUIBASE_COMMAND_PASSWORD
-              value: "12345"
+        echo "Clonando repositorio..."
+        git clone https://github.com/jgonzalez-s3/liquibase-migrations.git
 
-          command:
-            - sh
-            - -c
+        cd liquibase-migrations
 
-          args:
-            -|
-              set -e
+        echo "Verificando estructura..."
 
-              echo "===== PRE-SYNC ====="
+        test -f liquibase.properties
+        test -f changelog/db.changelog-master.json
+        test -f lib/postgresql-42.7.10.jar
+        sleep 60
+        
+        echo "Archivos encontrados."
 
-              echo "Instalando git..."
-              apk add --no-cache git
-
-              echo "Clonando repositorio..."
-              git clone https://github.com/jgonzalez-s3/liquibase-migrations.git
-
-              cd liquibase-migrations
-
-              echo "Verificando estructura..."
-
-              test -f liquibase.properties
-              test -f changelog/db.changelog-master.json
-              test -f lib/postgresql-42.7.10.jar
-              sleep 60
-              echo "Archivos encontrados."
-              sleep 60
+        sleep 60
