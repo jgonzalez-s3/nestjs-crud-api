@@ -6,7 +6,7 @@ metadata:
   annotations:
     prueba: "1"
     argocd.argoproj.io/hook: PreSync
-    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation, HookSucceeded
+    #argocd.argoproj.io/hook-delete-policy: BeforeHookCreation, HookSucceeded
 
 spec:
   backoffLimit: 0
@@ -16,9 +16,43 @@ spec:
       replicas: 2
       restartPolicy: Never
 
+      volumes:
+        - name: migrations
+          emptyDir: {}
+
+      initContainers:
+        - name: clone-repository
+
+          image: alpine/git:latest
+
+          command:
+            - sh
+            - -c
+
+          args:
+            - |
+              set -e
+
+              echo "Clonando repositorio..."
+
+              git clone https://github.com/jgonzalez-s3/liquibase-migrations.git /workspace
+
+              echo "Repositorio clonado."
+
+              ls -R /workspace
+
+          volumeMounts:
+            - name: migrations
+              mountPath: /workspace    
+
       containers:
+        
         - name: liquibase
           image: liquibase/liquibase:5.0
+        
+          volumeMounts:
+            - name: migrations
+              mountPath: /workspace
 
           env:
             - name: LIQUIBASE_COMMAND_URL
@@ -36,27 +70,24 @@ spec:
 
           args:
             - |
-              set -e
+                set -e
 
-              echo "===== PRE-SYNC ====="
+                echo "===== PRE-SYNC ====="
 
-              echo "Instalando git..."
-              apt update
-              apt install git -y
-              git --version
-              
+                cd /workspace
 
-              echo "Clonando repositorio..."
-              git clone https://github.com/jgonzalez-s3/liquibase-migrations.git
+                echo "Contenido del repositorio"
 
-              cd liquibase-migrations
+                ls -R
 
-              echo "Verificando estructura..."
+                test -f liquibase.properties
 
-              test -f liquibase.properties
-              test -f changelog/db.changelog-master.json
-              test -f lib/postgresql-42.7.10.jar
+                test -f changelog/db.changelog-master.json
 
-              echo "Archivos encontrados."
+                test -f lib/postgresql-42.7.10.jar
 
-              sleep 60
+                echo "Archivos encontrados."
+
+                liquibase --version
+
+                sleep 60
