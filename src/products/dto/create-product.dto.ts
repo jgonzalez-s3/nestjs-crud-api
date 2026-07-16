@@ -19,7 +19,6 @@ export class CreateProductDto {
 
   @IsNotEmpty()
   @IsNumber()
-  @Max(9999999999)
   @Min(0)
   @ApiProperty()
   price: number;
