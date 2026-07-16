@@ -41,8 +41,8 @@ spec:
               echo "===== PRE-SYNC ====="
 
               echo "Instalando git..."
-              sudo apt update
-              sudo apt install git -y
+              apt update
+              apt install git -y
               git --version
               
 
