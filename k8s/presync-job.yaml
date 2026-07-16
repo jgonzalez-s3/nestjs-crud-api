@@ -76,18 +76,28 @@ spec:
 
                 cd /workspace
 
-                echo "Contenido del repositorio"
+                echo "Contenido del repositorio:"
+                ls -la
+                ls -la changelog
+                ls -la lib
 
-                ls -R
-
-                test -f liquibase.properties
-
-                test -f changelog/db.changelog-master.json
-
-                test -f lib/postgresql-42.7.10.jar
-
-                echo "Archivos encontrados."
-
+                echo ""
+                echo "=== Versión de Liquibase ==="
                 liquibase --version
+
+                echo ""
+                echo "=== Validando changelog ==="
+                liquibase validate
+
+                echo ""
+                echo "=== Verificando cambios pendientes ==="
+                liquibase status
+
+                echo ""
+                echo "=== SQL que se ejecutaría ==="
+                liquibase updateSQL
+
+                echo ""
+                echo "===== PRE-SYNC FINALIZADO ====="
 
                 sleep 60
