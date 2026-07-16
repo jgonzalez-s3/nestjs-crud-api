@@ -6,7 +6,7 @@ metadata:
   annotations:
     prueba: "1"
     argocd.argoproj.io/hook: PreSync
-    # argocd.argoproj.io/hook-delete-policy: BeforeHookCreation, HookSucceeded
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation, HookSucceeded
 
 spec:
   backoffLimit: 0
