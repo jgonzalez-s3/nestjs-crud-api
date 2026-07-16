@@ -41,7 +41,9 @@ spec:
               echo "===== PRE-SYNC ====="
 
               echo "Instalando git..."
-              git -v
+              sudo apt update
+              sudo apt install git -y
+              git --version
               
 
               echo "Clonando repositorio..."
