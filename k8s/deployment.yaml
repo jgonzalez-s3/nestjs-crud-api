@@ -37,7 +37,7 @@ spec:
               value: "postgres"
 
             - name: DB_PASSWORD
-              value: "123456789"
+              value: "12345"
 
             - name: DB_NAME
               value: "productsdb"
