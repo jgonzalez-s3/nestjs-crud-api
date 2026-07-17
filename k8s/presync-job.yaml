@@ -39,7 +39,13 @@ spec:
 
               echo "Clonando repositorio..."
 
-              git clone https://github.com/jgonzalez-s3/liquibase-migrations.git /workspace
+              git clone https://github.com/jgonzalez-s3/liquibase-migrations.git
+
+              cd /workspace
+
+              echo "Version de esquema: ${DATABASE_SCHEMA_VERSION}"
+
+              git checkout schema-${DATABASE_SCHEMA_VERSION}
 
               echo "Repositorio clonado."
 
