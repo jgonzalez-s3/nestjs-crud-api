@@ -25,6 +25,10 @@ spec:
 
           image: alpine/git:latest
 
+          env:
+            - name: DATABASE_SCHEMA_VERSION
+              value: "1.0.0"
+
           command:
             - sh
             - -c
