@@ -39,7 +39,7 @@ spec:
 
               echo "Clonando repositorio..."
 
-              git clone https://github.com/jgonzalez-s3/liquibase-migrations.git
+              git clone https://github.com/jgonzalez-s3/liquibase-migrations.git /workspace
 
               cd /workspace
 
