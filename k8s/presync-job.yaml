@@ -45,7 +45,7 @@ spec:
 
               echo "Version de esquema: ${DATABASE_SCHEMA_VERSION}"
 
-              git checkout schema-${DATABASE_SCHEMA_VERSION}
+              git checkout ${DATABASE_SCHEMA_VERSION}
 
               echo "Repositorio clonado."
 
